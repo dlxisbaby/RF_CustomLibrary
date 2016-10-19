@@ -3,13 +3,18 @@
 class mytool():
 	def __init__(self):
                 pass
-        def test_a_b(self,a,b):
+
+        def dlx_repeated_key_to_post_data(self,num,key_name,from_list):
                 '''
-                比较2个参数的大小
+                将列表转化为post类型的数据
                 '''
-                if a > b:
-                        #flag = False
-                        return a
+                string_list = str(from_list)
+                string = ''
+                if ",)" in string_list:
+                        for i in from_list[:int(num)]:
+                                string = string + "{0}={1}&".format(key_name,i[0])
                 else:
-                        #flag = True
-                        return b
+                        for i in from_list[:int(num)]:
+                                string = string + "{0}={1}&".format(key_name,i)
+                return string[:-1]
+        
