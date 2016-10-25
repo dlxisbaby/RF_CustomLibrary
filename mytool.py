@@ -44,3 +44,19 @@ class mytool():
                                                 dict2[i] = dict_key_value[i][j]
                         expect_list.append(dict2)
                 return expect_list
+
+        def dlx_select_db_json_to_tuple(self,DB_list):
+                '''
+                将从数据库中查询出来列表（json）转化为元组，作为IN关键字后的条件
+                如：
+                [(u'["S20160927766190","S20160927159910"]',), (u'["S20160927766190","S20160927825520","S20160927936647","S20160927159910","P20160927764039"]',), (u'["P20161018158611"]',)]
+                转化为：
+                (u'S20160927766190', u'S20160927159910', u'S20160927766190', u'S20160927825520', u'S20160927936647', u'S20160927159910', u'P20160927764039', u'P20161018158611')
+                '''
+                final_list = []
+                for i in DB_list:
+                        string  = i[0][2:-2]
+                        list1 = string.split('","')
+                        for j in list1:
+                                final_list.append(j.encode("utf8"))
+                return tuple(final_list)
