@@ -34,14 +34,14 @@ class mytool():
                         for i in dict_key_value:
                                 if ',)' in str(dict_key_value[i]):
                                         if type(dict_key_value[i][j][0]) == type(unicode()):
-                                                dict2[i] = dict_key_value[i][j][0]
+                                                dict2[i.encode("utf8")] = dict_key_value[i][j][0].encode("utf8")
                                         else:
-                                                dict2[i] = str(dict_key_value[i][j][0])
+                                                dict2[i.encode("utf8")] = str(dict_key_value[i][j][0]).encode("utf8")
                                 else:
                                         if type(dict_key_value[i][j]) == type(int()) or type(dict_key_value[i][j]) == type(float()):
-                                                dict2[i] = str(dict_key_value[i][j])
+                                                dict2[i.encode("utf8")] = str(dict_key_value[i][j]).encode("utf8")
                                         else:
-                                                dict2[i] = dict_key_value[i][j]
+                                                dict2[i.encode("utf8")] = dict_key_value[i][j].encode("utf8")
                         expect_list.append(dict2)
                 return expect_list
 
