@@ -60,3 +60,14 @@ class mytool():
                         for j in list1:
                                 final_list.append(j.encode("utf8"))
                 return tuple(final_list)
+
+        def dlx_get_length_equal_n_list(self,num,list_value):
+                '''
+                num为3，list_value为group
+                则生成一个列表为[group,group,group]
+                '''
+                list1 = []
+                num_list = range(0,int(num))
+                for i in num_list:
+                        list1.append(list_value)
+                return list1      
