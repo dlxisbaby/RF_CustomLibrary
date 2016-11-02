@@ -1,6 +1,7 @@
-# coding=utf-8
+#coding:utf-8
 from mytool import mytool
 
 version = '1.0'
-class MyLibrary(mytool):
+
+class CustomLibrary(mytool):
     ROBOT_LIBRARY_SCOPE = 'GLOBAL'
