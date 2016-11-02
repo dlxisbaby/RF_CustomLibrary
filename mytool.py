@@ -70,4 +70,12 @@ class mytool():
                 num_list = range(0,int(num))
                 for i in num_list:
                         list1.append(list_value)
-                return list1      
+                return list1
+
+        def dlx_list_subtract_list(self,list1,list2):
+                '''
+                列表1减去列表2，返回新的列表
+                '''
+                for i in list2:
+                        list1.remove(i)
+                return list1
