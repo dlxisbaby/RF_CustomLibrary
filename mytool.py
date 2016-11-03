@@ -79,3 +79,21 @@ class mytool():
                 for i in list2:
                         list1.remove(i)
                 return list1
+
+        def dlx_db_list_to_standard_list(self,db_list):
+                '''
+                将查询数据库的列表，如：
+
+                [(1,), (3,), (15,), (16,), (17,), (18,), (19,), (20,)]
+
+                转化为标准列表
+
+                [1, 3, 15, 16, 17, 18, 19, 20]
+                '''
+                list1 = []
+                for i in db_list:
+                        if type(i[0]) == type(int()):
+                                list1.append(i[0])
+                        else:
+                                list1.append(i[0].encode("utf8"))
+                return list1
