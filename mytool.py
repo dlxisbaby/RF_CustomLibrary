@@ -1,4 +1,5 @@
 #coding:utf-8
+from decimal import Decimal
 
 class mytool():
 	def __init__(self):
@@ -92,8 +93,17 @@ class mytool():
                 '''
                 list1 = []
                 for i in db_list:
-                        if type(i[0]) == type(int()):
+                        if type(i[0]) == type(int()) or type(i[0]) == type(Decimal()):
                                 list1.append(i[0])
+                        elif type(i[0]) == type(unicode()):
+                                for ch in i[0]:
+                                        #判断是否为中文
+                                        if u'\u4e00' <= ch <= u'\u9fff':
+                                                list1.append(i[0])
+                                                break
+                                        else:
+                                                list1.append(i[0].encode("utf8"))
+                                                break
                         else:
                                 list1.append(i[0].encode("utf8"))
                 return list1
