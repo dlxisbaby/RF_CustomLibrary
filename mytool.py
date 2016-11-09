@@ -1,5 +1,6 @@
 #coding:utf-8
 from decimal import Decimal
+import time
 
 class mytool():
 	def __init__(self):
@@ -107,3 +108,13 @@ class mytool():
                         else:
                                 list1.append(i[0].encode("utf8"))
                 return list1
+
+        def dlx_get_current_unix_time_string(self):
+                '''
+                获得当前时间的unix时间戳字符串
+                '''
+                format1 = '%Y-%m-%d %H:%M:%S'
+                time1 = time.localtime()
+                value = time.strftime(format1,time1)
+                s = time.mktime(time1)
+                return str(int(s))
