@@ -1,10 +1,18 @@
 #coding:utf-8
 from decimal import Decimal
-import time
+import time,sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 class mytool():
 	def __init__(self):
                 pass
+
+        def dlx_check_contain_chinese(self,check_str):
+                for ch in check_str.decode('utf-8'):
+                        if u'\u4e00' <= ch <= u'\u9fff':
+                                return True
+                return False
 
         def dlx_repeated_key_to_post_data(self,num,key_name,from_list):
                 '''
@@ -30,20 +38,29 @@ class mytool():
                 '''
                 num_list = range(0,int(num))
                 expect_list = []
-
                 for j in num_list:
                         dict2 = {}
                         for i in dict_key_value:
                                 if ',)' in str(dict_key_value[i]):
                                         if type(dict_key_value[i][j][0]) == type(unicode()):
-                                                dict2[i.encode("utf8")] = dict_key_value[i][j][0].encode("utf8")
+                                                if mytool().dlx_check_contain_chinese(dict_key_value[i][j][0]) == True:
+                                                        dict2[i.encode("utf8")] = dict_key_value[i][j][0]
+                                                else:
+                                                        dict2[i.encode("utf8")] = dict_key_value[i][j][0].encode("utf8")
+                                        elif type(dict_key_value[i][j][0]) == type(int()) or type(dict_key_value[i][j][0]) == type(float()):
+                                                dict2[i.encode("utf8")] = str(dict_key_value[i][j][0]).encode("utf8")
                                         else:
                                                 dict2[i.encode("utf8")] = str(dict_key_value[i][j][0]).encode("utf8")
                                 else:
-                                        if type(dict_key_value[i][j]) == type(int()) or type(dict_key_value[i][j]) == type(float()):
+                                        if type(dict_key_value[i][j]) == type(unicode()):
+                                                if mytool().dlx_check_contain_chinese(dict_key_value[i][j]) == True:
+                                                        dict2[i.encode("utf8")] = dict_key_value[i][j]
+                                                else:
+                                                        dict2[i.encode("utf8")] = dict_key_value[i][j].encode("utf8")
+                                        elif type(dict_key_value[i][j]) == type(int()) or type(dict_key_value[i][j]) == type(float()):
                                                 dict2[i.encode("utf8")] = str(dict_key_value[i][j]).encode("utf8")
                                         else:
-                                                dict2[i.encode("utf8")] = dict_key_value[i][j].encode("utf8")
+                                                dict2[i.encode("utf8")] = str(dict_key_value[i][j]).encode("utf8")
                         expect_list.append(dict2)
                 return expect_list
 
