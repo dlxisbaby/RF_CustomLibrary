@@ -1,6 +1,6 @@
 #coding:utf-8
 from decimal import Decimal
-import time,sys
+import time,sys,hashlib
 reload(sys)
 sys.setdefaultencoding('utf8')
 
@@ -135,3 +135,9 @@ class mytool():
                 value = time.strftime(format1,time1)
                 s = time.mktime(time1)
                 return str(int(s))
+
+        def dlx_md5_32_lowercase(self,string):
+                m = hashlib.md5()
+                m.update(string)
+                encrypted_string = m.hexdigest()
+                return encrypted_string
