@@ -1,6 +1,8 @@
 #coding:utf-8
 from decimal import Decimal
 import time,sys,hashlib
+from xml.dom.minidom import parse
+import xml.dom.minidom
 reload(sys)
 sys.setdefaultencoding('utf8')
 
@@ -102,11 +104,8 @@ class mytool():
         def dlx_db_list_to_standard_list(self,db_list):
                 '''
                 将查询数据库的列表，如：
-
                 [(1,), (3,), (15,), (16,), (17,), (18,), (19,), (20,)]
-
                 转化为标准列表
-
                 [1, 3, 15, 16, 17, 18, 19, 20]
                 '''
                 list1 = []
@@ -144,3 +143,14 @@ class mytool():
                 m.update(string)
                 encrypted_string = m.hexdigest()
                 return encrypted_string
+
+	def dlx_get_xml_resp_code(self,xml_resp,tag_name):
+                '''
+                解析返回的XML，返回所输入标签的内容
+                如:<tag_name>123</tag_name>
+                则返回123
+                '''
+		xml_data = xml.dom.minidom.parseString(xml_resp)
+		Results = xml_data.getElementsByTagName(tag_name)
+		for Result in Results:
+			return Result.childNodes[0].data
