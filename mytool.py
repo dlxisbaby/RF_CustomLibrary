@@ -137,6 +137,9 @@ class mytool():
                 return str(int(s))
 
         def dlx_md5_32_lowercase(self,string):
+                '''
+                对字符串进行32位小写的MD5加密
+                '''
                 m = hashlib.md5()
                 m.update(string)
                 encrypted_string = m.hexdigest()
