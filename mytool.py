@@ -144,13 +144,24 @@ class mytool():
                 encrypted_string = m.hexdigest()
                 return encrypted_string
 
-	def dlx_get_xml_resp_code(self,xml_resp,tag_name):
+	def dlx_get_xml_resp_code(self,xml_resp,tag_name,unique_name='',unique_value='',res_code=''):
                 '''
                 解析返回的XML，返回所输入标签的内容
                 如:<tag_name>123</tag_name>
-                则返回123
+                则返回123,如果后面3个参数不为空，则返回res_code的值
+                unique_name为唯一标识标签名，unique_value为唯一标识的值
+                res_code为与unique_name同级的标签的值111
                 '''
-		xml_data = xml.dom.minidom.parseString(xml_resp)
-		Results = xml_data.getElementsByTagName(tag_name)
-		for Result in Results:
-			return Result.childNodes[0].data
+                xml_data = xml.dom.minidom.parseString(xml_resp)
+                Results = xml_data.getElementsByTagName(tag_name)
+                if unique_name == '' or unique_value == '' or res_code == '':
+                        for Result in Results:
+                                return Result.childNodes[0].data
+                else:
+                        for Result in Results:
+                                unique_id = Result.getElementsByTagName(unique_name)[0].childNodes[0].data
+                                if unique_id == unique_value:
+                                        return Result.getElementsByTagName(res_code)[0].childNodes[0].data
+                                        break
+                                else:
+                                        continue
