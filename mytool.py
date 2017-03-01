@@ -154,9 +154,12 @@ class mytool():
                 '''
                 xml_data = xml.dom.minidom.parseString(xml_resp)
                 Results = xml_data.getElementsByTagName(tag_name)
-                if unique_name == '' and unique_value == '' and res_code == '':
+                if unique_value == '' and res_code == '' and unique_name == '':
                         for Result in Results:
-                                return Result.childNodes[0].data
+                                if len(Result.childNodes) != 0:
+                                        return Result.childNodes[0].data
+                                else:
+                                        return ''
                 else:
                         for Result in Results:
                                 unique_id = Result.getElementsByTagName(unique_name)[0].childNodes[0].data
