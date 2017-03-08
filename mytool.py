@@ -1,7 +1,8 @@
 #coding:utf-8
 from decimal import Decimal
-import time,sys,hashlib
+import time,sys,hashlib,xmltodict
 from xml.dom.minidom import parse
+from collections import OrderedDict
 import xml.dom.minidom
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -177,3 +178,24 @@ class mytool():
                                 if unique_id == unique_value:
                                         return Result.getElementsByTagName(res_code)[0].childNodes[0].data
                                         break
+
+	def sql_result_to_ordered_dict(self,tag_list,*value_lists):
+		'''
+		value_lists = [list1,list2,list3,……]
+		value_lists的长度应等于tag_list的长度
+		将value_lists中每个列表的第一个值赋值给tag_list中的第一个值，
+		形成有序字典，以此类推
+		'''
+		list_final = []
+		result_ordereddict = OrderedDict()
+		length = len(tag_list)
+	
+		for k in range(0,len(value_lists[0])):
+			i = 0
+			while i < length:
+				result_ordereddict[tag_list[i]] = value_lists[i][k]
+				i = i+1
+			dict2 = result_ordereddict.copy()
+			list_final.append(dict2)
+			continue
+		return list_final
