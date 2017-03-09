@@ -179,7 +179,7 @@ class mytool():
                                         return Result.getElementsByTagName(res_code)[0].childNodes[0].data
                                         break
 
-	def sql_result_to_ordered_dict(self,tag_list,*value_lists):
+	def dlx_sql_result_to_ordered_dict(self,tag_list,*value_lists):
 		'''
 		value_lists = [list1,list2,list3,……]
 		value_lists的长度应等于tag_list的长度
@@ -199,3 +199,14 @@ class mytool():
 			list_final.append(dict2)
 			continue
 		return list_final
+	
+	def dlx_xml_to_ordered_dict(self,xml_resp,*tag_names):
+		'''
+		将XML型的响应结果转化为有序字典，tag_names为
+		获取指定tag下的元组
+		'''
+		convert_string = xmltodict.parse(xml_resp)
+		length = len(tag_names)
+		for i in range(0,length):
+			convert_string = convert_string[tag_names[i]]
+		return convert_string
