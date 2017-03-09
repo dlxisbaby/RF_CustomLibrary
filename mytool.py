@@ -1,6 +1,6 @@
 #coding:utf-8
 from decimal import Decimal
-import time,sys,hashlib,xmltodict
+import time,sys,hashlib,xmltodict,operator
 from xml.dom.minidom import parse
 from collections import OrderedDict
 import xml.dom.minidom
@@ -179,34 +179,41 @@ class mytool():
                                         return Result.getElementsByTagName(res_code)[0].childNodes[0].data
                                         break
 
-	def dlx_sql_result_to_ordered_dict(self,tag_list,*value_lists):
+	def dlx_sql_result_to_dict(self,tag_list,*value_lists):
 		'''
 		value_lists = [list1,list2,list3,……]
 		value_lists的长度应等于tag_list的长度
-		将value_lists中每个列表的第一个值赋值给tag_list中的第一个值，
-		形成有序字典，以此类推
+		将value_lists中每个列表的第一个值赋值给tag_list列表，
+		形成字典，以此类推，最后生成值为字典的列表
 		'''
 		list_final = []
-		result_ordereddict = OrderedDict()
+		dict_final = {}
 		length = len(tag_list)
 	
 		for k in range(0,len(value_lists[0])):
 			i = 0
 			while i < length:
-				result_ordereddict[tag_list[i]] = value_lists[i][k]
+				dict_final[tag_list[i]] = value_lists[i][k]
 				i = i+1
-			dict2 = result_ordereddict.copy()
+			dict2 = dict_final.copy()
 			list_final.append(dict2)
 			continue
+		list_final.sort(key=operator.itemgetter(tag_list[0]))
 		return list_final
-	
-	def dlx_xml_to_ordered_dict(self,xml_resp,*tag_names):
+	
+
+	def dlx_xml_to_dict(xml_resp,order_by,*tag_names):
 		'''
-		将XML型的响应结果转化为有序字典，tag_names为
-		获取指定tag下的元组
+		将XML型的响应结果转化为字典，tag_names为
+		获取指定tag下的元组,按照order_by的值进行排序
 		'''
 		convert_string = xmltodict.parse(xml_resp)
 		length = len(tag_names)
+		final_list = []
 		for i in range(0,length):
 			convert_string = convert_string[tag_names[i]]
-		return convert_string
+		for i in convert_string:
+			final_dict = dict(i)
+			final_list.append(final_dict)
+			final_list.sort(key=operator.itemgetter(order_by))
+		return final_list
