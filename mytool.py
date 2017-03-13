@@ -147,11 +147,11 @@ class mytool():
 
 	def dlx_get_xml_resp_code(self,xml_resp,tag_name,unique_name="",unique_value="",res_code=""):
                 '''
-                解析返回的XML，返回所输入标签的内容
-                1、后面3个参数都为空时，如:<tag_name>123</tag_name>,则返回123
-                2、如果后面3个参数同时不为空，则返回res_code的值
-                unique_name为唯一标识标签名，unique_value为唯一标识的值
-                res_code为与unique_name同级的标签的值
+                解析返回的XML，返回所输入标签的内容\n
+                1、后面3个参数都为空时，如:<tag_name>123</tag_name>,则返回123\n
+                2、如果后面3个参数同时不为空，则返回res_code的值\
+                unique_name为唯一标识标签名，unique_value为唯一标识的值\
+                res_code为与unique_name同级的标签的值\n
                 3、如果只有后面2个参数为空，则返回tag_name标签的下级，unique_name
                 标签值的列表
                 '''
@@ -181,9 +181,9 @@ class mytool():
 
 	def dlx_sql_result_to_dict(self,tag_list,*value_lists):
 		'''
-		value_lists = [list1,list2,list3,……]
-		value_lists的长度应等于tag_list的长度
-		将value_lists中每个列表的第一个值赋值给tag_list列表，
+		value_lists = [list1,list2,list3,……]\n
+		value_lists的长度应等于tag_list的长度\n
+		将value_lists中每个列表的第一个值赋值给tag_list列表，\
 		形成字典，以此类推，最后生成值为字典的列表
 		'''
 		list_final = []
@@ -202,9 +202,9 @@ class mytool():
 		return list_final
 	
 
-	def dlx_xml_to_dict(xml_resp,order_by,*tag_names):
+	def dlx_xml_to_dict(self,xml_resp,order_by,*tag_names):
 		'''
-		将XML型的响应结果转化为字典，tag_names为
+		将XML型的响应结果转化为字典，tag_names为\
 		获取指定tag下的元组,按照order_by的值进行排序
 		'''
 		convert_string = xmltodict.parse(xml_resp)
