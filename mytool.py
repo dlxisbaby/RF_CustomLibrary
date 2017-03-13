@@ -102,28 +102,33 @@ class mytool():
                         list1.remove(i)
                 return list1
 
-        def dlx_db_list_to_standard_list(self,db_list):
+        def dlx_db_list_to_standard_list(self,db_list,mode="1"):
                 '''
                 将查询数据库的列表，如：
                 [(1,), (3,), (15,), (16,), (17,), (18,), (19,), (20,)]
                 转化为标准列表
-                [1, 3, 15, 16, 17, 18, 19, 20]
+                [1, 3, 15, 16, 17, 18, 19, 20](mode=1时)
+                [u'1',u'3',u'15',u'17',u'18',u'19',u'20'](mode=2时)
+                
                 '''
                 list1 = []
                 for i in db_list:
-                        if type(i[0]) == type(int()) or type(i[0]) == type(Decimal()):
-                                list1.append(i[0])
-                        elif type(i[0]) == type(unicode()):
-                                for ch in i[0]:
-                                        #判断是否为中文
-                                        if u'\u4e00' <= ch <= u'\u9fff':
-                                                list1.append(i[0])
-                                                break
-                                        else:
-                                                list1.append(i[0].encode("utf8"))
-                                                break
-                        else:
-                                list1.append(i[0].encode("utf8"))
+                        if mode == "1":
+                                if type(i[0]) == type(int()) or type(i[0]) == type(Decimal()):
+                                        list1.append(i[0])
+                                elif type(i[0]) == type(unicode()):
+                                        for ch in i[0]:
+                                                #判断是否为中文
+                                                if u'\u4e00' <= ch <= u'\u9fff':
+                                                        list1.append(i[0])
+                                                        break
+                                                else:
+                                                        list1.append(i[0].encode("utf8"))
+                                                        break
+                                else:
+                                        list1.append(i[0].encode("utf8"))
+                        elif mode == "2":
+                                list1.append(str(i[0]).decode("utf-8"))
                 return list1
 
         def dlx_get_current_unix_time_string(self):
