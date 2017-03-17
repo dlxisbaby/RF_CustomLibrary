@@ -238,10 +238,10 @@ class mytool():
 		return list_final
 	
 
-	def dlx_xml_to_dict(self,xml_resp,order_by,pass_tag=[],*tag_names):
+	def dlx_xml_to_dict(self,xml_resp,order_by='',pass_tag=[],*tag_names):
 		'''
 		将XML型的响应结果转化为字典，tag_names为
-		需要获取的XML的层级,按照order_by的值进行排序。
+		需要获取的XML的层级,按照order_by的值进行排序,默认可不填。
 		pass_tag为需要忽略的tag列表
 		'''
 		convert_string = xmltodict.parse(xml_resp)
@@ -249,6 +249,9 @@ class mytool():
 		final_list = []
 		for i in range(0,length):
 			convert_string = convert_string[tag_names[i]]
+			if length == 1:
+				convert_string.pop("@xmlns:xsi")
+				convert_string.pop("@xmlns:xsd")
 		if type(convert_string) == OrderedDict:
 			convert_string = [convert_string]
 		for i in convert_string:
@@ -257,5 +260,6 @@ class mytool():
 				for j in pass_tag:
 					final_dict.pop(j)
 			final_list.append(final_dict)
-			final_list.sort(key=operator.itemgetter(order_by))
+			if order_by != '':
+				final_list.sort(key=operator.itemgetter(order_by))
 		return final_list
