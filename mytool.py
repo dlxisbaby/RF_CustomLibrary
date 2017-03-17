@@ -206,36 +206,72 @@ class mytool():
 			order_dict = OrderedDict()
 			order_dict3 = OrderedDict()
 			dict4 = {}
-			for k in range(0,len(OrderedDict_dict["tag_value_list"][0])):
+			if type(OrderedDict_dict["tag_value_list"][0]) == list:
+				for k in range(0,len(OrderedDict_dict["tag_value_list"][0])):
+					i = 0
+					while i < length2:
+						order_dict[OrderedDict_dict["tag_name_list"][i]] = OrderedDict_dict["tag_value_list"][i][k]
+						i = i + 1
+					order_dict2 = order_dict.copy()
+					length3 = len(OrderedDict_dict["level_name_list"])
+					for j in range(0,length3):
+						if j == length3-1:
+							dict4[OrderedDict_dict["level_name_list"][0]] = order_dict2
+						else:
+							order_dict3[OrderedDict_dict["level_name_list"][length3-1-j]] = order_dict2
+							order_dict2 = order_dict3.copy()
+							order_dict3 = OrderedDict()
+							continue
+					dict5 = dict4.copy()
+					order_list.append(dict5)
+					continue
+			else:
+				for k in range(0,len(OrderedDict_dict["tag_value_list"])):
+					i = 0
+					while i < length2:
+						if type(OrderedDict_dict["tag_value_list"][k]) == unicode:
+							order_dict[OrderedDict_dict["tag_name_list"][i]] = OrderedDict_dict["tag_value_list"][i]
+						if type(OrderedDict_dict["tag_value_list"][k]) == str:
+							order_dict[OrderedDict_dict["tag_name_list"][i]] = OrderedDict_dict["tag_value_list"][i].decode("utf-8")
+						i = i + 1
+					order_dict2 = order_dict.copy()
+					length3 = len(OrderedDict_dict["level_name_list"])
+					for j in range(0,length3):
+						if j == length3-1:
+							dict4[OrderedDict_dict["level_name_list"][0]] = order_dict2
+						else:
+							order_dict3[OrderedDict_dict["level_name_list"][length3-1-j]] = order_dict2
+							order_dict2 = order_dict3.copy()
+							order_dict3 = OrderedDict()
+							continue
+					dict5 = dict4.copy()
+					order_list.append(dict5)
+					continue            
+		if type(value_lists[0]) == list:
+			for k in range(0,len(value_lists[0])):
 				i = 0
-				while i < length2:
-					order_dict[OrderedDict_dict["tag_name_list"][i]] = OrderedDict_dict["tag_value_list"][i][k]
-					i = i + 1
-				order_dict2 = order_dict.copy()
-				length3 = len(OrderedDict_dict["level_name_list"])
-				for j in range(0,length3):
-					if j == length3-1:
-						dict4[OrderedDict_dict["level_name_list"][0]] = order_dict2
-					else:
-						order_dict3[OrderedDict_dict["level_name_list"][length3-1-j]] = order_dict2
-						order_dict2 = order_dict3.copy()
-						order_dict3 = OrderedDict()
-						continue
-				dict5 = dict4.copy()
-				order_list.append(dict5)
+				while i < length:
+					dict_final[tag_list[i]] = value_lists[i][k]
+					i = i+1
+				dict2 = dict_final.copy()
+				if order_list != []:
+					dict2 = dict(dict2.items()+order_list[k].items())
+				list_final.append(dict2)
 				continue
-		for k in range(0,len(value_lists[0])):
-			i = 0
-			while i < length:
-				dict_final[tag_list[i]] = value_lists[i][k]
-				i = i+1
+			list_final.sort(key=operator.itemgetter(tag_list[0]))
+			return list_final
+		else:
+			for k in range(0,len(value_lists)):
+				if type(value_lists[k]) == unicode:
+					dict_final[tag_list[k]] = value_lists[k]
+				if type(value_lists[k]) == str:
+					dict_final[tag_list[k]] = value_lists[k].decode("utf-8")
 			dict2 = dict_final.copy()
 			if order_list != []:
-				dict2 = dict(dict2.items()+order_list[k].items())
+				dict2 = dict(dict2.items()+order_list[0].items())
 			list_final.append(dict2)
-			continue
-		list_final.sort(key=operator.itemgetter(tag_list[0]))
-		return list_final
+			list_final.sort(key=operator.itemgetter(tag_list[0]))
+			return list_final
 	
 
 	def dlx_xml_to_dict(self,xml_resp,order_by='',pass_tag=[],*tag_names):
