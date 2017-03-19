@@ -197,7 +197,7 @@ class mytool():
 		level_name_list为层级名称列表，tag_name_list为标签内容列表，\
 		tag_value_list为每个标签内容列表的集合\n
 		mode为模式，"one to many"模式一个多层级下有返回多个标签的内容，"many to one"\
-		模式为返回的多个内容都有一个多层级
+		模式为返回的1个或多个内容都有一个多层级
 		'''
 		list_final = []
 		dict_final = {}
