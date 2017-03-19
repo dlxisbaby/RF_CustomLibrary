@@ -258,7 +258,7 @@ class mytool():
 			for k in range(0,len(OrderedDict_dict["tag_value_list"][0])):
 				i = 0 
 				while i < length2:
-					order_dict[OrderedDict_dict["tag_name_list"][i]] = OrderedDict_dict["tag_value_list"][i][k]
+					order_dict[OrderedDict_dict["tag_name_list"][i]] = str(OrderedDict_dict["tag_value_list"][i][k]).decode("utf-8")
 					i = i + 1
 				order_dict2 = order_dict.copy()
 				if k != len(OrderedDict_dict["tag_value_list"][0])-1:
