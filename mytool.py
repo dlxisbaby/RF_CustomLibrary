@@ -184,7 +184,7 @@ class mytool():
                                         return Result.getElementsByTagName(res_code)[0].childNodes[0].data
                                         break
 
-	def dlx_sql_result_to_dict(self,tag_list,mode="",OrderedDict_dict={},*value_lists):
+	def dlx_sql_result_to_dict(self,tag_list,mode="many to one",OrderedDict_dict={},*value_lists):
 		'''
 		value_lists = [list1,list2,list3,……]\n
 		value_lists的长度应等于tag_list的长度\n
