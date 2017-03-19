@@ -184,7 +184,7 @@ class mytool():
                                         return Result.getElementsByTagName(res_code)[0].childNodes[0].data
                                         break
 
-	def dlx_sql_result_to_dict(self,tag_list,OrderedDict_dict={},*value_lists):
+	def dlx_sql_result_to_dict(self,tag_list,mode="",OrderedDict_dict={},*value_lists):
 		'''
 		value_lists = [list1,list2,list3,……]\n
 		value_lists的长度应等于tag_list的长度\n
@@ -195,13 +195,15 @@ class mytool():
 		"tag_name_list":["FilmNo","FilmName","FilmType","Language"],\
 		"tag_value_list":[FilmNo_list,FilmName_list,FilmType_list,Language_list]}
 		level_name_list为层级名称列表，tag_name_list为标签内容列表，\
-		tag_value_list为每个标签内容列表的集合
+		tag_value_list为每个标签内容列表的集合\n
+		mode为模式，"one to many"模式一个多层级下有返回多个标签的内容，"many to one"\
+		模式为返回的多个内容都有一个多层级
 		'''
 		list_final = []
 		dict_final = {}
 		order_list = []
 		length = len(tag_list)
-		if len(OrderedDict_dict) != 0 :
+		if len(OrderedDict_dict) != 0 and mode == "many to one":
 			length2 = len(OrderedDict_dict["tag_name_list"])
 			order_dict = OrderedDict()
 			order_dict3 = OrderedDict()
@@ -246,7 +248,37 @@ class mytool():
 						order_dict3 = OrderedDict()
 						continue
 				dict5 = dict4.copy()
-				order_list.append(dict5)         
+				order_list.append(dict5)
+		elif len(OrderedDict_dict) != 0 and mode == "one to many":
+			length2 = len(OrderedDict_dict["tag_name_list"])
+			order_dict = OrderedDict()
+			order_dict3 = OrderedDict()
+			dict4 = {}
+			order_list2 = []
+			for k in range(0,len(OrderedDict_dict["tag_value_list"][0])):
+				i = 0 
+				while i < length2:
+					order_dict[OrderedDict_dict["tag_name_list"][i]] = OrderedDict_dict["tag_value_list"][i][k]
+					i = i + 1
+				order_dict2 = order_dict.copy()
+				if k != len(OrderedDict_dict["tag_value_list"][0])-1:
+					order_list2.append(order_dict2)
+					continue
+				else:
+					order_list2.append(order_dict2)
+					order_dict2 = OrderedDict()
+	
+					length3 = len(OrderedDict_dict["level_name_list"])
+					for j in range(0,length3):
+						if j == length3-1:
+							dict4[OrderedDict_dict["level_name_list"][0]] = order_dict2
+						else:
+							order_dict3[OrderedDict_dict["level_name_list"][length3-1-j]] = order_list2
+							order_dict2 = order_dict3.copy()
+							order_dict3 = OrderedDict()
+							continue
+					dict5 = dict4.copy()
+					order_list.append(dict5)
 		if type(value_lists[0]) == list:
 			for k in range(0,len(value_lists[0])):
 				i = 0
