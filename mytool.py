@@ -184,7 +184,7 @@ class mytool():
                                         return Result.getElementsByTagName(res_code)[0].childNodes[0].data
                                         break
 
-	def dlx_sql_result_to_dict(self,tag_list,mode="many to one",OrderedDict_dict={},*value_lists):
+	def dlx_sql_result_to_dict(self,tag_list,mode="",OrderedDict_dict={},*value_lists):
 		'''
 		value_lists = [list1,list2,list3,……]\n
 		value_lists的长度应等于tag_list的长度\n
@@ -195,9 +195,9 @@ class mytool():
 		"tag_name_list":["FilmNo","FilmName","FilmType","Language"],\
 		"tag_value_list":[FilmNo_list,FilmName_list,FilmType_list,Language_list]}
 		level_name_list为层级名称列表，tag_name_list为标签内容列表，\
-		tag_value_list为每个标签内容列表的集合\n
+		tag_value_list为每个标签内容列表的集合,列表中的内容必须为同一类型\n
 		mode为模式，"one to many"模式一个多层级下有返回多个标签的内容，"many to one"\
-		模式为返回的1个或多个内容都有一个多层级
+		模式为返回的多个内容都有一个多层级
 		'''
 		list_final = []
 		dict_final = {}
@@ -258,7 +258,7 @@ class mytool():
 			for k in range(0,len(OrderedDict_dict["tag_value_list"][0])):
 				i = 0 
 				while i < length2:
-					order_dict[OrderedDict_dict["tag_name_list"][i]] = str(OrderedDict_dict["tag_value_list"][i][k]).decode("utf-8")
+					order_dict[OrderedDict_dict["tag_name_list"][i]] = OrderedDict_dict["tag_value_list"][i][k]
 					i = i + 1
 				order_dict2 = order_dict.copy()
 				if k != len(OrderedDict_dict["tag_value_list"][0])-1:
@@ -283,7 +283,7 @@ class mytool():
 			for k in range(0,len(value_lists[0])):
 				i = 0
 				while i < length:
-					dict_final[tag_list[i]] = value_lists[i][k]
+					dict_final[tag_list[i]] = str(value_lists[i][k]).decode("utf-8")
 					i = i+1
 				dict2 = dict_final.copy()
 				if order_list != []:
@@ -294,12 +294,7 @@ class mytool():
 			return list_final
 		else:
 			for k in range(0,len(value_lists)):
-				if type(value_lists[k]) == unicode:
-					dict_final[tag_list[k]] = value_lists[k]
-				if type(value_lists[k]) == str:
-					dict_final[tag_list[k]] = value_lists[k].decode("utf-8")
-				if type(value_lists[k]) == int or type(value_lists[k]) == float:
-					dict_final[tag_list[k]] = str(value_lists[k]).decode("utf-8")
+				dict_final[tag_list[k]] = str(value_lists[k]).decode("utf-8")
 			dict2 = dict_final.copy()
 			if order_list != []:
 				dict2 = dict(dict2.items()+order_list[0].items())
