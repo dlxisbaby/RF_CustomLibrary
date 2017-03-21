@@ -325,6 +325,10 @@ class mytool():
 				for j in pass_tag:
 					final_dict.pop(j)
 			final_list.append(final_dict)
-			if order_by != '':
-				final_list.sort(key=operator.itemgetter(order_by))
+		if order_by != '':
+			for i in final_list:
+				i[order_by] = int(i[order_by])
+			final_list.sort(key=operator.itemgetter(order_by))
+			for i in final_list:
+				i[order_by] = str(i[order_by]).decode("utf-8")
 		return final_list
