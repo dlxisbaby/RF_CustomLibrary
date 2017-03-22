@@ -290,7 +290,11 @@ class mytool():
 					dict2 = dict(dict2.items()+order_list[k].items())
 				list_final.append(dict2)
 				continue
+			for i in list_final:
+				i[tag_name_list[0]] = int(i[tag_name_list[0]])
 			list_final.sort(key=operator.itemgetter(tag_name_list[0]))
+			for i in list_final:
+				i[tag_name_list[0]] = str(i[tag_name_list[0]]).decode("utf-8")
 			return list_final
 		else:
 			for k in range(0,len(tag_value_lists)):
@@ -299,7 +303,11 @@ class mytool():
 			if order_list != []:
 				dict2 = dict(dict2.items()+order_list[0].items())
 			list_final.append(dict2)
+			for i in list_final:
+				i[tag_name_list[0]] = int(i[tag_name_list[0]])
 			list_final.sort(key=operator.itemgetter(tag_name_list[0]))
+			for i in list_final:
+				i[tag_name_list[0]] = str(i[tag_name_list[0]]).decode("utf-8")
 			return list_final
 	
 
