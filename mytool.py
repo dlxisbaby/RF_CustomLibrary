@@ -184,16 +184,16 @@ class mytool():
                                         return Result.getElementsByTagName(res_code)[0].childNodes[0].data
                                         break
 
-	def dlx_sql_result_to_dict(self,tag_list,mode="",OrderedDict_dict={},*value_lists):
+	def dlx_sql_result_to_dict(self,tag_name_list,mode="",OrderedDict_dict={},*tag_value_lists):
 		'''
-		value_lists = [list1,list2,list3,……]\n
+		tag_value_lists = [list1,list2,list3,……]\n
 		value_lists的长度应等于tag_list的长度\n
 		将value_lists中每个列表的第一个值赋值给tag_list列表，\
 		形成字典，以此类推，最后生成值为字典的列表\n
 		OrderedDict_list为需要转化为有序字典的字典，格式为：\
-		{"level_name_list":["Films","Film","ff"],\
-		"tag_name_list":["FilmNo","FilmName","FilmType","Language"],\
-		"tag_value_list":[FilmNo_list,FilmName_list,FilmType_list,Language_list]}
+		{"level_name_list":["Films","Film"],\
+		"level_tag_name_list":["FilmNo","FilmName","FilmType","Language"],\
+		"level_tag_value_list":[FilmNo_list,FilmName_list,FilmType_list,Language_list]}
 		level_name_list为层级名称列表，tag_name_list为标签内容列表，\
 		tag_value_list为每个标签内容列表的集合,列表中的内容必须为同一类型\n
 		mode为模式，"one to many"模式一个多层级下有返回多个标签的内容，"many to one"\
@@ -202,17 +202,17 @@ class mytool():
 		list_final = []
 		dict_final = {}
 		order_list = []
-		length = len(tag_list)
+		length = len(tag_name_list)
 		if len(OrderedDict_dict) != 0 and mode == "many to one":
-			length2 = len(OrderedDict_dict["tag_name_list"])
+			length2 = len(OrderedDict_dict["level_tag_name_list"])
 			order_dict = OrderedDict()
 			order_dict3 = OrderedDict()
 			dict4 = {}
-			if type(OrderedDict_dict["tag_value_list"][0]) == list:
-				for k in range(0,len(OrderedDict_dict["tag_value_list"][0])):
+			if type(OrderedDict_dict["level_tag_value_list"][0]) == list:
+				for k in range(0,len(OrderedDict_dict["level_tag_value_list"][0])):
 					i = 0
 					while i < length2:
-						order_dict[OrderedDict_dict["tag_name_list"][i]] = OrderedDict_dict["tag_value_list"][i][k]
+						order_dict[OrderedDict_dict["level_tag_name_list"][i]] = OrderedDict_dict["level_tag_value_list"][i][k]
 						i = i + 1
 					order_dict2 = order_dict.copy()
 					length3 = len(OrderedDict_dict["level_name_list"])
@@ -230,12 +230,12 @@ class mytool():
 			else:
 				i = 0
 				while i < length2:
-					if type(OrderedDict_dict["tag_value_list"][i]) == unicode:
-						order_dict[OrderedDict_dict["tag_name_list"][i]] = OrderedDict_dict["tag_value_list"][i]
-					if type(OrderedDict_dict["tag_value_list"][i]) == str:
-						order_dict[OrderedDict_dict["tag_name_list"][i]] = OrderedDict_dict["tag_value_list"][i].decode("utf-8")
-					if type(OrderedDict_dict["tag_value_list"][i]) == int or type(OrderedDict_dict["tag_value_list"][i]) == float:
-						order_dict[OrderedDict_dict["tag_name_list"][i]] = str(OrderedDict_dict["tag_value_list"][i]).decode("utf-8")                    
+					if type(OrderedDict_dict["level_tag_value_list"][i]) == unicode:
+						order_dict[OrderedDict_dict["level_tag_name_list"][i]] = OrderedDict_dict["level_tag_value_list"][i]
+					if type(OrderedDict_dict["level_tag_value_list"][i]) == str:
+						order_dict[OrderedDict_dict["level_tag_name_list"][i]] = OrderedDict_dict["level_tag_value_list"][i].decode("utf-8")
+					if type(OrderedDict_dict["level_tag_value_list"][i]) == int or type(OrderedDict_dict["level_tag_value_list"][i]) == float:
+						order_dict[OrderedDict_dict["level_tag_name_list"][i]] = str(OrderedDict_dict["level_tag_value_list"][i]).decode("utf-8")                    
 					i = i + 1
 				order_dict2 = order_dict.copy()
 				length3 = len(OrderedDict_dict["level_name_list"])
@@ -250,18 +250,18 @@ class mytool():
 				dict5 = dict4.copy()
 				order_list.append(dict5)
 		elif len(OrderedDict_dict) != 0 and mode == "one to many":
-			length2 = len(OrderedDict_dict["tag_name_list"])
+			length2 = len(OrderedDict_dict["level_tag_name_list"])
 			order_dict = OrderedDict()
 			order_dict3 = OrderedDict()
 			dict4 = {}
 			order_list2 = []
-			for k in range(0,len(OrderedDict_dict["tag_value_list"][0])):
+			for k in range(0,len(OrderedDict_dict["level_tag_value_list"][0])):
 				i = 0 
 				while i < length2:
-					order_dict[OrderedDict_dict["tag_name_list"][i]] = OrderedDict_dict["tag_value_list"][i][k]
+					order_dict[OrderedDict_dict["level_tag_name_list"][i]] = OrderedDict_dict["level_tag_value_list"][i][k]
 					i = i + 1
 				order_dict2 = order_dict.copy()
-				if k != len(OrderedDict_dict["tag_value_list"][0])-1:
+				if k != len(OrderedDict_dict["level_tag_value_list"][0])-1:
 					order_list2.append(order_dict2)
 					continue
 				else:
@@ -279,41 +279,41 @@ class mytool():
 							continue
 					dict5 = dict4.copy()
 					order_list.append(dict5)
-		if type(value_lists[0]) == list:
-			for k in range(0,len(value_lists[0])):
+		if type(tag_value_lists[0]) == list:
+			for k in range(0,len(tag_value_lists[0])):
 				i = 0
 				while i < length:
-					dict_final[tag_list[i]] = str(value_lists[i][k]).decode("utf-8")
+					dict_final[tag_name_list[i]] = str(tag_value_lists[i][k]).decode("utf-8")
 					i = i+1
 				dict2 = dict_final.copy()
 				if order_list != []:
 					dict2 = dict(dict2.items()+order_list[k].items())
 				list_final.append(dict2)
 				continue
-			list_final.sort(key=operator.itemgetter(tag_list[0]))
+			list_final.sort(key=operator.itemgetter(tag_name_list[0]))
 			return list_final
 		else:
-			for k in range(0,len(value_lists)):
-				dict_final[tag_list[k]] = str(value_lists[k]).decode("utf-8")
+			for k in range(0,len(tag_value_lists)):
+				dict_final[tag_name_list[k]] = str(tag_value_lists[k]).decode("utf-8")
 			dict2 = dict_final.copy()
 			if order_list != []:
 				dict2 = dict(dict2.items()+order_list[0].items())
 			list_final.append(dict2)
-			list_final.sort(key=operator.itemgetter(tag_list[0]))
+			list_final.sort(key=operator.itemgetter(tag_name_list[0]))
 			return list_final
 	
 
-	def dlx_xml_to_dict(self,xml_resp,order_by='',pass_tag=[],*tag_names):
+	def dlx_xml_to_dict(self,xml_resp,order_by='',pass_tag=[],*level_tag_names):
 		'''
-		将XML型的响应结果转化为字典，tag_names为
+		将XML型的响应结果转化为字典，level_tag_names为
 		需要获取的XML的层级,按照order_by的值进行排序,默认可不填。
 		pass_tag为需要忽略的tag列表
 		'''
 		convert_string = xmltodict.parse(xml_resp)
-		length = len(tag_names)
+		length = len(level_tag_names)
 		final_list = []
 		for i in range(0,length):
-			convert_string = convert_string[tag_names[i]]
+			convert_string = convert_string[level_tag_names[i]]
 			if length == 1:
 				convert_string.pop("@xmlns:xsi")
 				convert_string.pop("@xmlns:xsd")
