@@ -196,14 +196,14 @@ class mytool():
 		"level_tag_value_list":[FilmNo_list,FilmName_list,FilmType_list,Language_list]}
 		level_name_list为层级名称列表，tag_name_list为标签内容列表，\
 		tag_value_list为每个标签内容列表的集合,列表中的内容必须为同一类型\n
-		mode为模式，"one to many"模式一个多层级下有返回多个标签的内容，"many to one"\
-		模式为返回的多个内容都有一个多层级
+		mode为模式，"outside"模式为有部分内容在固定标签外，"inside"\
+		模式为所有内容都在固定标签下
 		'''
 		list_final = []
 		dict_final = {}
 		order_list = []
 		length = len(tag_name_list)
-		if len(OrderedDict_dict) != 0 and mode == "many to one":
+		if len(OrderedDict_dict) != 0 and mode == "inside":
 			length2 = len(OrderedDict_dict["level_tag_name_list"])
 			order_dict = OrderedDict()
 			order_dict3 = OrderedDict()
@@ -249,7 +249,7 @@ class mytool():
 						continue
 				dict5 = dict4.copy()
 				order_list.append(dict5)
-		elif len(OrderedDict_dict) != 0 and mode == "one to many":
+		elif len(OrderedDict_dict) != 0 and mode == "outside":
 			length2 = len(OrderedDict_dict["level_tag_name_list"])
 			order_dict = OrderedDict()
 			order_dict3 = OrderedDict()
@@ -258,7 +258,7 @@ class mytool():
 			for k in range(0,len(OrderedDict_dict["level_tag_value_list"][0])):
 				i = 0 
 				while i < length2:
-					order_dict[OrderedDict_dict["level_tag_name_list"][i]] = OrderedDict_dict["level_tag_value_list"][i][k]
+					order_dict[OrderedDict_dict["level_tag_name_list"][i]] = str(OrderedDict_dict["level_tag_value_list"][i][k]).decode("utf-8")
 					i = i + 1
 				order_dict2 = order_dict.copy()
 				if k != len(OrderedDict_dict["level_tag_value_list"][0])-1:
