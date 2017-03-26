@@ -340,3 +340,18 @@ class mytool():
 			for i in final_list:
 				i[order_by] = str(i[order_by]).decode("utf-8")
 		return final_list
+
+	def dlx_get_php_config_key_value(self,filesource,keyname):
+		'''
+		获取config.php中的keyname的值
+		'''
+		f = open(filesource,"r")
+		lines = f.readlines()
+		for line in lines:
+			line = line, 
+			line = line[0].strip()
+			liness = line.split("=>")
+			liness[0] = liness[0].strip().replace("'",'').replace('"','')
+			if liness[0] == keyname:
+				return liness[1].strip().replace("'",'').replace(",",'').replace('"','')
+		f.close()
