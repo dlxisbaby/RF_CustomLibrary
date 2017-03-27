@@ -1,6 +1,6 @@
 #coding:utf-8
 from decimal import Decimal
-import time,sys,hashlib,xmltodict,operator
+import time,sys,hashlib,xmltodict,operator,os,paramiko
 from xml.dom.minidom import parse
 from collections import OrderedDict
 import xml.dom.minidom
@@ -341,11 +341,18 @@ class mytool():
 				i[order_by] = str(i[order_by]).decode("utf-8")
 		return final_list
 
-	def dlx_get_php_config_key_value(self,filesource,keyname):
+	def dlx_get_php_config_key_value(self,server_ip,remote_path,keyname):
 		'''
-		获取config.php中的keyname的值
+		获取服务器中config.php中的keyname的值
 		'''
-		f = open(filesource,"r")
+		local_path = u"D:/RF_code/1905_ticket_business/02-Interface/01-测试用例/config.php"
+		client = paramiko.Transport((server_ip,22))
+		client.connect(username="root",password="pw#1905")
+		sftp = paramiko.SFTPClient.from_transport(client)
+		sftp.get(remote_path,local_path)
+		client.close()
+	
+		f = open(local_path,"r")
 		lines = f.readlines()
 		for line in lines:
 			line = line, 
@@ -353,5 +360,6 @@ class mytool():
 			liness = line.split("=>")
 			liness[0] = liness[0].strip().replace("'",'').replace('"','')
 			if liness[0] == keyname:
+				f.close()
+				os.remove(local_path)
 				return liness[1].strip().replace("'",'').replace(",",'').replace('"','')
-		f.close()
