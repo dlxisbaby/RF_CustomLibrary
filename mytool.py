@@ -345,7 +345,7 @@ class mytool():
 		'''
 		获取服务器中config.php中的keyname的值
 		'''
-		local_path = u"D:/RF_code/1905_ticket_business/02-Interface/01-测试用例/config.php"
+		local_path = u"D:/config.php"
 		client = paramiko.Transport((server_ip,22))
 		client.connect(username="root",password="pw#1905")
 		sftp = paramiko.SFTPClient.from_transport(client)
