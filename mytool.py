@@ -184,101 +184,17 @@ class mytool():
                                         return Result.getElementsByTagName(res_code)[0].childNodes[0].data
                                         break
 
-	def dlx_sql_result_to_dict(self,tag_name_list,mode="",OrderedDict_dict={},*tag_value_lists):
+	def dlx_sql_result_to_dict(self,tag_name_list,*tag_value_lists):
 		'''
 		tag_value_lists = [list1,list2,list3,……]\n
-		value_lists的长度应等于tag_list的长度\n
-		将value_lists中每个列表的第一个值赋值给tag_list列表，\
+		tag_value_lists的长度应等于tag_name_list的长度\n
+		将tag_value_lists中每个列表的第一个值赋值给tag_name_list列表，\
 		形成字典，以此类推，最后生成值为字典的列表\n
-		OrderedDict_list为需要转化为有序字典的字典，格式为：\
-		{"level_name_list":["Films","Film"],\
-		"level_tag_name_list":["FilmNo","FilmName","FilmType","Language"],\
-		"level_tag_value_list":[FilmNo_list,FilmName_list,FilmType_list,Language_list]}
-		level_name_list为层级名称列表，tag_name_list为标签内容列表，\
-		tag_value_list为每个标签内容列表的集合,列表中的内容必须为同一类型\n
-		mode为模式，"outside"模式为有部分内容在固定标签外，"inside"\
-		模式为所有内容都在固定标签下
 		'''
 		list_final = []
 		dict_final = {}
 		order_list = []
 		length = len(tag_name_list)
-		if len(OrderedDict_dict) != 0 and mode == "inside":
-			length2 = len(OrderedDict_dict["level_tag_name_list"])
-			order_dict = OrderedDict()
-			order_dict3 = OrderedDict()
-			dict4 = {}
-			if type(OrderedDict_dict["level_tag_value_list"][0]) == list:
-				for k in range(0,len(OrderedDict_dict["level_tag_value_list"][0])):
-					i = 0
-					while i < length2:
-						order_dict[OrderedDict_dict["level_tag_name_list"][i]] = OrderedDict_dict["level_tag_value_list"][i][k]
-						i = i + 1
-					order_dict2 = order_dict.copy()
-					length3 = len(OrderedDict_dict["level_name_list"])
-					for j in range(0,length3):
-						if j == length3-1:
-							dict4[OrderedDict_dict["level_name_list"][0]] = order_dict2
-						else:
-							order_dict3[OrderedDict_dict["level_name_list"][length3-1-j]] = order_dict2
-							order_dict2 = order_dict3.copy()
-							order_dict3 = OrderedDict()
-							continue
-					dict5 = dict4.copy()
-					order_list.append(dict5)
-					continue
-			else:
-				i = 0
-				while i < length2:
-					if type(OrderedDict_dict["level_tag_value_list"][i]) == unicode:
-						order_dict[OrderedDict_dict["level_tag_name_list"][i]] = OrderedDict_dict["level_tag_value_list"][i]
-					if type(OrderedDict_dict["level_tag_value_list"][i]) == str:
-						order_dict[OrderedDict_dict["level_tag_name_list"][i]] = OrderedDict_dict["level_tag_value_list"][i].decode("utf-8")
-					if type(OrderedDict_dict["level_tag_value_list"][i]) == int or type(OrderedDict_dict["level_tag_value_list"][i]) == float:
-						order_dict[OrderedDict_dict["level_tag_name_list"][i]] = str(OrderedDict_dict["level_tag_value_list"][i]).decode("utf-8")                    
-					i = i + 1
-				order_dict2 = order_dict.copy()
-				length3 = len(OrderedDict_dict["level_name_list"])
-				for j in range(0,length3):
-					if j == length3-1:
-						dict4[OrderedDict_dict["level_name_list"][0]] = order_dict2
-					else:
-						order_dict3[OrderedDict_dict["level_name_list"][length3-1-j]] = order_dict2
-						order_dict2 = order_dict3.copy()
-						order_dict3 = OrderedDict()
-						continue
-				dict5 = dict4.copy()
-				order_list.append(dict5)
-		elif len(OrderedDict_dict) != 0 and mode == "outside":
-			length2 = len(OrderedDict_dict["level_tag_name_list"])
-			order_dict = OrderedDict()
-			order_dict3 = OrderedDict()
-			dict4 = {}
-			order_list2 = []
-			for k in range(0,len(OrderedDict_dict["level_tag_value_list"][0])):
-				i = 0 
-				while i < length2:
-					order_dict[OrderedDict_dict["level_tag_name_list"][i]] = str(OrderedDict_dict["level_tag_value_list"][i][k]).decode("utf-8")
-					i = i + 1
-				order_dict2 = order_dict.copy()
-				if k != len(OrderedDict_dict["level_tag_value_list"][0])-1:
-					order_list2.append(order_dict2)
-					continue
-				else:
-					order_list2.append(order_dict2)
-					order_dict2 = OrderedDict()
-	
-					length3 = len(OrderedDict_dict["level_name_list"])
-					for j in range(0,length3):
-						if j == length3-1:
-							dict4[OrderedDict_dict["level_name_list"][0]] = order_dict2
-						else:
-							order_dict3[OrderedDict_dict["level_name_list"][length3-1-j]] = order_list2
-							order_dict2 = order_dict3.copy()
-							order_dict3 = OrderedDict()
-							continue
-					dict5 = dict4.copy()
-					order_list.append(dict5)
 		if type(tag_value_lists[0]) == list:
 			for k in range(0,len(tag_value_lists[0])):
 				i = 0
@@ -309,7 +225,6 @@ class mytool():
 			for i in list_final:
 				i[tag_name_list[0]] = str(i[tag_name_list[0]]).decode("utf-8")
 			return list_final
-	
 
 	def dlx_xml_to_dict(self,xml_resp,order_by='',pass_tag=[],*level_tag_names):
 		'''
@@ -363,3 +278,74 @@ class mytool():
 				f.close()
 				os.remove(local_path)
 				return liness[1].strip().replace("'",'').replace(",",'').replace('"','')
+			
+	def dlx_make_list_to_ordered_dict_list(self,normal_dict):
+		'''
+		normal_dict为需要转化为有序字典的字典，格式为：\
+		{"level_name":"Film"\
+		"level_tag_name_list":["FilmNo","FilmName","FilmType","Language"],\
+		"level_tag_value_list":[FilmNo_list,FilmName_list,FilmType_list,Language_list],\
+		"group_list":["3","1","3"]}
+		level_name_list为层级名称列表，tag_name_list为标签内容列表，\
+		tag_value_list为每个标签内容列表的集合,列表中的内容必须为同一类型\n
+		'''
+		order_dict1 = OrderedDict()
+		length1 = len(normal_dict["level_tag_value_list"][0])
+		length2 = len(normal_dict["level_tag_name_list"])
+		list_final = []
+		if normal_dict.has_key("group_list") == True:
+			ordered_dict_list = []
+			num = 0
+			dict2 = {}
+			for i in range(0,length1):
+				k = 0
+				while k < length2:
+					order_dict1[normal_dict["level_tag_name_list"][k]] = str(normal_dict["level_tag_value_list"][k][i]).decode("utf-8")
+					k = k + 1
+				dict2 = order_dict1.copy()
+				ordered_dict_list.append(dict2)
+			num_temp = 0
+			for i in normal_dict["group_list"]:
+				ordered_dict = OrderedDict()
+				list_temp = ordered_dict_list[num_temp:num_temp+int(i)]
+				num_temp = num_temp+int(i)
+				if int(i) == 1:
+					ordered_dict[normal_dict["level_name"]] = list_temp[0]
+					list_final.append(ordered_dict)
+				else:
+					ordered_dict[normal_dict["level_name"]] = list_temp
+					list_final.append(ordered_dict)
+			return list_final
+		else:
+			ordered_dict_list = []
+			if type(normal_dict["level_tag_value_list"][0]) == list:
+				for i in range(0,length1):
+					k = 0
+					while k < length2:
+						order_dict1[normal_dict["level_tag_name_list"][k]] = str(normal_dict["level_tag_value_list"][k][i]).decode("utf-8")
+						k = k + 1
+					dict2 = order_dict1.copy()
+					ordered_dict_list.append(dict2)
+					ordered_dict = OrderedDict()
+					ordered_dict[normal_dict["level_name"]] = ordered_dict_list
+					list_final.append(ordered_dict)
+				return list_final
+			else:
+				k = 0
+				while k < length2:
+					order_dict1[normal_dict["level_tag_name_list"][k]] = str(normal_dict["level_tag_value_list"][k]).decode("utf-8")
+					k = k + 1
+				dict2 = order_dict1.copy()
+				ordered_dict_list.append(dict2)
+				ordered_dict = OrderedDict()
+				ordered_dict[normal_dict["level_name"]] = ordered_dict_list
+				list_final.append(ordered_dict)
+				return list_final
+			
+	def dlx_contact_two_dict_list(self,list_main,list_order,key_name):
+		if len(list_main) == len(list_order):
+			length1 = len(list_main)
+			new_key = str(key_name).decode("utf-8")
+			for i in range(0,length1):
+				list_main[i][new_key] = list_order[i]
+			return list_main
