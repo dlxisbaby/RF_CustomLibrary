@@ -300,7 +300,7 @@ class mytool():
 			for i in range(0,length1):
 				k = 0
 				while k < length2:
-					order_dict1[normal_dict["level_tag_name_list"][k]] = str(normal_dict["level_tag_value_list"][k][i]).decode("utf-8")
+					order_dict1[str(normal_dict["level_tag_name_list"][k]).decode("utf-8")] = str(normal_dict["level_tag_value_list"][k][i]).decode("utf-8")
 					k = k + 1
 				dict2 = order_dict1.copy()
 				ordered_dict_list.append(dict2)
@@ -322,18 +322,19 @@ class mytool():
 				for i in range(0,length1):
 					k = 0
 					while k < length2:
-						order_dict1[normal_dict["level_tag_name_list"][k]] = str(normal_dict["level_tag_value_list"][k][i]).decode("utf-8")
+
+						order_dict1[str(normal_dict["level_tag_name_list"][k]).decode("utf-8")] = str(normal_dict["level_tag_value_list"][k][i]).decode("utf-8")
 						k = k + 1
 					dict2 = order_dict1.copy()
 					ordered_dict_list.append(dict2)
 					ordered_dict = OrderedDict()
-					ordered_dict[normal_dict["level_name"]] = ordered_dict_list
+					ordered_dict[normal_dict["level_name"]] = ordered_dict_list[i]
 					list_final.append(ordered_dict)
 				return list_final
 			else:
 				k = 0
 				while k < length2:
-					order_dict1[normal_dict["level_tag_name_list"][k]] = str(normal_dict["level_tag_value_list"][k]).decode("utf-8")
+					order_dict1[str(normal_dict["level_tag_name_list"][k]).decode("utf-8")] = str(normal_dict["level_tag_value_list"][k]).decode("utf-8")
 					k = k + 1
 				dict2 = order_dict1.copy()
 				ordered_dict_list.append(dict2)
