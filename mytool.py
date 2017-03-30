@@ -279,8 +279,9 @@ class mytool():
 				os.remove(local_path)
 				return liness[1].strip().replace("'",'').replace(",",'').replace('"','')
 			
-	def dlx_make_list_to_ordered_dict_list(self,normal_dict):
+	def dlx_make_list_to_ordered_dict_list(self,normal_dict,level_num=''):
 		'''
+		level_num为父层级的数量
 		normal_dict为需要转化为有序字典的字典，格式为：\
 		{"level_name":"Film"\
 		"level_tag_name_list":["FilmNo","FilmName","FilmType","Language"],\
@@ -290,10 +291,10 @@ class mytool():
 		tag_value_list为每个标签内容列表的集合,列表中的内容必须为同一类型\n
 		'''
 		order_dict1 = OrderedDict()
-		length1 = len(normal_dict["level_tag_value_list"][0])
 		length2 = len(normal_dict["level_tag_name_list"])
 		list_final = []
 		if normal_dict.has_key("group_list") == True:
+			length1 = len(normal_dict["level_tag_value_list"][0])
 			ordered_dict_list = []
 			num = 0
 			dict2 = {}
@@ -319,17 +320,21 @@ class mytool():
 		else:
 			ordered_dict_list = []
 			if type(normal_dict["level_tag_value_list"][0]) == list:
+				length1 = len(normal_dict["level_tag_value_list"][0])
 				for i in range(0,length1):
 					k = 0
 					while k < length2:
-
 						order_dict1[str(normal_dict["level_tag_name_list"][k]).decode("utf-8")] = str(normal_dict["level_tag_value_list"][k][i]).decode("utf-8")
 						k = k + 1
 					dict2 = order_dict1.copy()
 					ordered_dict_list.append(dict2)
 					ordered_dict = OrderedDict()
-					ordered_dict[normal_dict["level_name"]] = ordered_dict_list[i]
+					if int(level_num) == 1:
+						ordered_dict[normal_dict["level_name"]] = ordered_dict_list
+					else:
+						ordered_dict[normal_dict["level_name"]] = ordered_dict_list[i]
 					list_final.append(ordered_dict)
+				print ordered_dict_list
 				return list_final
 			else:
 				k = 0
@@ -337,16 +342,18 @@ class mytool():
 					order_dict1[str(normal_dict["level_tag_name_list"][k]).decode("utf-8")] = str(normal_dict["level_tag_value_list"][k]).decode("utf-8")
 					k = k + 1
 				dict2 = order_dict1.copy()
-				ordered_dict_list.append(dict2)
 				ordered_dict = OrderedDict()
-				ordered_dict[normal_dict["level_name"]] = ordered_dict_list
+				ordered_dict[normal_dict["level_name"]] = dict2
 				list_final.append(ordered_dict)
 				return list_final
 			
 	def dlx_contact_two_dict_list(self,list_main,list_order,key_name):
-		if len(list_main) == len(list_order):
-			length1 = len(list_main)
-			new_key = str(key_name).decode("utf-8")
+		length1 = len(list_main)
+		new_key = str(key_name).decode("utf-8")
+		if length1 == 1:
+			list_main[0][new_key] = list_order[0]
+			return list_main
+		else:
 			for i in range(0,length1):
 				list_main[i][new_key] = list_order[i]
 			return list_main
