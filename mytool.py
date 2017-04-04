@@ -279,7 +279,7 @@ class mytool():
 				os.remove(local_path)
 				return liness[1].strip().replace("'",'').replace(",",'').replace('"','')
 			
-	def dlx_make_list_to_ordered_dict_list(self,normal_dict,level_num=''):
+	def dlx_make_list_to_ordered_dict_list(self,normal_dict,level_num):
 		'''
 		level_num为父层级的数量
 		normal_dict为需要转化为有序字典的字典，格式为：\
