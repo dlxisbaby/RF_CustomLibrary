@@ -1,6 +1,6 @@
 #coding:utf-8
 from decimal import Decimal
-import time,sys,hashlib,xmltodict,operator,os,paramiko
+import time,sys,hashlib,xmltodict,operator,os,paramiko,redis
 from xml.dom.minidom import parse
 from collections import OrderedDict
 import xml.dom.minidom
@@ -357,3 +357,27 @@ class mytool():
 			for i in range(0,length1):
 				list_main[i][new_key] = list_order[i]
 			return list_main
+
+	def dlx_get_value_list_from_redis(self,cinema_code,session_code,order_by_key,target_key):
+		r = redis.Redis(host="172.16.200.233",port="6379",db=0)
+		string1 = r.hgetall("CACHE:HASH:SESSIONSEAT:{0}:{1}".format(cinema_code,session_code))
+		list1 = string1.values()
+		list_final = []
+		list_sorted = []
+		for i in list1:
+			dict1 = eval(i)
+			if type(dict1[order_by_key]) != int:
+				dict1[order_by_key] = int(dict1[order_by_key])
+				list_sorted.append(dict1)
+		list_sorted.sort(key=operator.itemgetter(order_by_key))
+		for i in list_sorted:
+			i[order_by_key] = str(i[order_by_key])
+			if i["status"] == "available":
+				list_final.append("0")
+			elif i["status"] == "sold":
+				list_final.append("1")
+			elif i["status"] == "locked":
+				list_final.append("3")
+			else:
+				list_final.append("-1")
+		return list_final
