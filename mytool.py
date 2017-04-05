@@ -328,13 +328,18 @@ class mytool():
 						k = k + 1
 					dict2 = order_dict1.copy()
 					ordered_dict_list.append(dict2)
-					ordered_dict = OrderedDict()
-					if int(level_num) == 1:
-						ordered_dict[normal_dict["level_name"]] = ordered_dict_list
+					if normal_dict["level_name"] == '':
+						if int(level_num) == 1:
+							ordered_dict = ordered_dict_list
+						else:
+							ordered_dict = ordered_dict_list[i]
 					else:
-						ordered_dict[normal_dict["level_name"]] = ordered_dict_list[i]
+						ordered_dict = OrderedDict()
+						if int(level_num) == 1:
+							ordered_dict[normal_dict["level_name"]] = ordered_dict_list
+						else:
+							ordered_dict[normal_dict["level_name"]] = ordered_dict_list[i]
 					list_final.append(ordered_dict)
-				print ordered_dict_list
 				return list_final
 			else:
 				k = 0
