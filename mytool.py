@@ -353,6 +353,9 @@ class mytool():
 				return list_final
 			
 	def dlx_contact_two_dict_list(self,list_main,list_order,key_name):
+                '''
+                连接2个字典列表，key_name是list_main中的字典需要新加的key
+                '''
 		length1 = len(list_main)
 		new_key = str(key_name).decode("utf-8")
 		if length1 == 1:
@@ -364,6 +367,9 @@ class mytool():
 			return list_main
 
 	def dlx_get_value_list_from_redis(self,cinema_code,session_code,order_by_key,target_key):
+                '''
+                从redis中获取座位数据
+                '''
 		r = redis.Redis(host="172.16.200.233",port="6379",db=0)
 		string1 = r.hgetall("CACHE:HASH:SESSIONSEAT:{0}:{1}".format(cinema_code,session_code))
 		list1 = string1.values()
