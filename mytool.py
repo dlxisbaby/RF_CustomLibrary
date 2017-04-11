@@ -199,7 +199,10 @@ class mytool():
 			for k in range(0,len(tag_value_lists[0])):
 				i = 0
 				while i < length:
-					dict_final[tag_name_list[i]] = str(tag_value_lists[i][k]).decode("utf-8")
+					if tag_value_lists[i][k] == None:
+						dict_final[tag_name_list[i]] = tag_value_lists[i][k]
+					else:
+						dict_final[tag_name_list[i]] = str(tag_value_lists[i][k]).decode("utf-8")
 					i = i+1
 				dict2 = dict_final.copy()
 				if order_list != []:
@@ -214,7 +217,10 @@ class mytool():
 			return list_final
 		else:
 			for k in range(0,len(tag_value_lists)):
-				dict_final[tag_name_list[k]] = str(tag_value_lists[k]).decode("utf-8")
+				if tag_value_lists[k] == None:
+					dict_final[tag_name_list[k]] = tag_value_lists[k]
+				else:
+					dict_final[tag_name_list[k]] = str(tag_value_lists[k]).decode("utf-8")
 			dict2 = dict_final.copy()
 			if order_list != []:
 				dict2 = dict(dict2.items()+order_list[0].items())
