@@ -398,3 +398,17 @@ class mytool():
 			else:
 				list_final.append("-1")
 		return list_final
+
+	def dlx_convert_dict_list_to_float(self,dict_list,fields):
+                '''
+                将dict_list中的字典的字段值转化为float类型
+                '''
+                for i in dict_list:
+                    for j in i:
+                            if type(fields) == list:
+                                    if j in fields:
+                                            i[j] = str(float(i[j])).decode("utf-8")
+                            else:
+                                    if j == fields:
+                                            i[j] = str(float(i[j])).decode("utf-8")
+                return dict_list
