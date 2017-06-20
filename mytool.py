@@ -459,10 +459,8 @@ class mytool():
         '''
         转换一个列表给数据库的in关键字使用
         '''
-        final_list = []
+        final_string = ''
         for i in list_obj:
-            if type(i) == int or type(i) == float:
-                i = str(i)
-            final_list.append(i)
-        final_tuple = tuple(final_list)
-        return final_tuple
+            i = "\"{0}\"".format(i)
+            final_string = final_string + i + ","
+        return final_string[:-1]
