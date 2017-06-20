@@ -454,3 +454,15 @@ class mytool():
                         temp = float(temp)
                     obj[i] = temp
             return obj
+
+    def dlx_make_string_for_sql(self,list_obj):
+        '''
+        转换一个列表给数据库的in关键字使用
+        '''
+        final_list = []
+        for i in list_obj:
+            if type(i) == int or type(i) == float:
+                i = str(i)
+            final_list.append(i)
+        final_tuple = tuple(final_list)
+        return final_tuple
