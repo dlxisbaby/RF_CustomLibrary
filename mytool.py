@@ -338,15 +338,19 @@ class mytool():
                     ordered_dict_list.append(dict2)
                     if normal_dict["level_name"] == '':
                         if int(level_num) == 1:
+                            #ordered_dict = ordered_dict_list[0]
                             ordered_dict = ordered_dict_list
                         else:
                             ordered_dict = ordered_dict_list[i]
+                            #ordered_dict = ordered_dict_list[i][0]
                     else:
                         ordered_dict = OrderedDict()
                         if int(level_num) == 1:
                             ordered_dict[normal_dict["level_name"]] = ordered_dict_list
+                            #ordered_dict[normal_dict["level_name"]] = ordered_dict_list[0]
                         else:
                             ordered_dict[normal_dict["level_name"]] = ordered_dict_list[i]
+                            #ordered_dict[normal_dict["level_name"]] = ordered_dict_list[i][0]
                     list_final.append(ordered_dict)
                 return list_final
             else:
@@ -464,3 +468,17 @@ class mytool():
             i = "\"{0}\"".format(i)
             final_string = final_string + i + ","
         return final_string[:-1]
+
+    def dlx_remove_float_end_zero(self,list_begin):
+        '''
+        消除列表里面float类型尾部的0
+        '''
+        list_after = []
+        for i in list_begin:
+            i = float(i)
+            num_str = str(i)
+            if num_str[-1] == '0':
+                list_after.append(int(i))
+            else:
+                list_after.append(i)
+        return list_after
